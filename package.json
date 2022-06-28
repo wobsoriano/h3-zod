@@ -38,7 +38,7 @@
     "lint": "eslint .",
     "prepublishOnly": "nr build",
     "release": "bumpp && npm publish",
-    "test": "vitest",
+    "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -48,9 +48,11 @@
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.1",
     "@antfu/ni": "^0.16.2",
+    "@types/supertest": "^2.0.12",
     "bumpp": "^8.2.1",
     "eslint": "^8.18.0",
     "pnpm": "^7.3.0",
+    "supertest": "^6.2.3",
     "tsup": "6.0.1",
     "typescript": "^4.7.4",
     "vite": "^2.9.12",

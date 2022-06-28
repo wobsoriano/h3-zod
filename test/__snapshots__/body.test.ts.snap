@@ -1,0 +1,9 @@
+// Vitest Snapshot v1
+
+exports[`useValidatedBody > throws 400 Bad Request if body does not match validation schema 1`] = `
+{
+  "stack": [],
+  "statusCode": 400,
+  "statusMessage": "[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"boolean\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}]",
+}
+`;
