@@ -19,6 +19,18 @@ import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
 const app = createApp()
 
+app.use('/', async (req) => {
+  // Validate body
+  const body = await useValidatedBody(req, Type.Object({
+    optional: Type.Optional(Type.String()),
+    required: Type.Boolean(),
+  }))
+
+  // Validate query
+  const query = useValidatedQuery(req, Type.Object({
+    required: Type.String(),
+  }))
+})
 ```
 
 ## License

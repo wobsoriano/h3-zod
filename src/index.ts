@@ -25,7 +25,7 @@ export function useValidatedQuery<T extends TQuery>(
     })
   }
 
-  return parsed.data
+  return parsed.data as z.infer<T>
 }
 
 export async function useValidatedBody<T extends TQuery>(
@@ -42,7 +42,7 @@ export async function useValidatedBody<T extends TQuery>(
     })
   }
 
-  return parsed.data
+  return parsed.data as z.infer<T>
 }
 
 export {
