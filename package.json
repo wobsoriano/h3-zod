@@ -1,7 +1,7 @@
 {
   "name": "h3-zod",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "packageManager": "pnpm@7.3.0",
   "description": "TypeScript-first schema validation for h3.",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
