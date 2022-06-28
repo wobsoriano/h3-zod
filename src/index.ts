@@ -21,7 +21,9 @@ export function useValidatedQuery<T extends TQuery>(
   if (!parsed.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: JSON.stringify(parsed.error.errors),
+      statusMessage: JSON.stringify({
+        errors: parsed.error.errors,
+      }),
     })
   }
 
@@ -38,7 +40,9 @@ export async function useValidatedBody<T extends TQuery>(
   if (!parsed.success) {
     throw createError({
       statusCode: 400,
-      statusMessage: JSON.stringify(parsed.error.errors),
+      statusMessage: JSON.stringify({
+        errors: parsed.error.errors,
+      }),
     })
   }
 

@@ -4,6 +4,6 @@ exports[`useValidatedQuery > throws 400 Bad Request if query does not match vali
 {
   "stack": [],
   "statusCode": 400,
-  "statusMessage": "[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"string\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}]",
+  "statusMessage": "{\\"errors\\":[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"string\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}]}",
 }
 `;

@@ -33,6 +33,10 @@ describe('useValidatedBody', () => {
     const res = await request.post('/validate').send({})
 
     expect(res.status).toEqual(400)
-    expect(res.body).toMatchSnapshot()
+    expect(res.body).toMatchInlineSnapshot(`{
+      "stack": [],
+      "statusCode": 400,
+      "statusMessage": "{\\"errors\\":[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"boolean\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}]}",
+    }`)
   })
 })
