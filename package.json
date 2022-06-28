@@ -1,18 +1,23 @@
 {
-  "name": "pkg-name",
+  "name": "h3-zod",
   "type": "module",
   "version": "0.0.0",
   "packageManager": "pnpm@7.3.0",
   "description": "",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
   "license": "MIT",
-  "homepage": "https://github.com/wobsoriano/pkg-name#readme",
+  "homepage": "https://github.com/wobsoriano/h3-zod#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wobsoriano/pkg-name.git"
+    "url": "git+https://github.com/wobsoriano/h3-zod.git"
   },
-  "bugs": "https://github.com/wobsoriano/pkg-name/issues",
-  "keywords": [],
+  "bugs": "https://github.com/wobsoriano/h3-zod/issues",
+  "keywords": [
+    "h3",
+    "zod",
+    "connect",
+    "validation"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -36,6 +41,10 @@
     "start": "tsx src/index.ts",
     "test": "vitest",
     "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "h3": "^0.7.10",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.1",
