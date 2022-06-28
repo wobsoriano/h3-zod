@@ -7,7 +7,7 @@ Validate [h3](https://github.com/unjs/h3) requests using [zod](https://github.co
 ## Install
 
 ```bash
-pnpm add h3-zod
+npm install h3-zod
 ```
 
 ## Usage
@@ -28,8 +28,7 @@ app.use('/', async (req) => {
 
   // Validate query
   const query = useValidatedQuery(req, z.object({
-    id: z.number(),
-    category: z.string()
+    id: z.string().transform(id => parseInt(id, 10))
   }))
 })
 ```
