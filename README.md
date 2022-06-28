@@ -40,7 +40,7 @@ app.use('/', async (req) => {
 import { useValidatedBody, z } from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
-  const body = await useValidatedBody(req, z.object({
+  const body = await useValidatedBody(event, z.object({
     optional: z.string().optional(),
     required: z.boolean()
   }))
