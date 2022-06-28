@@ -25,6 +25,7 @@ describe('useValidatedBody', () => {
     const res = await request.post('/validate').send({ required: true })
 
     expect(res.status).toEqual(200)
+    expect(res.body).toMatchSnapshot()
   })
 
   it('throws 400 Bad Request if body does not match validation schema', async () => {

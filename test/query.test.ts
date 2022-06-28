@@ -24,6 +24,7 @@ describe('useValidatedQuery', () => {
     const res = await request.get('/validate?required')
 
     expect(res.status).toEqual(200)
+    expect(res.body).toMatchSnapshot()
   })
 
   it('throws 400 Bad Request if query does not match validation schema', async () => {

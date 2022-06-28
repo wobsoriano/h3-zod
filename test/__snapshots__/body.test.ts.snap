@@ -1,5 +1,11 @@
 // Vitest Snapshot v1
 
+exports[`useValidatedBody > returns 200 OK if body matches validation schema 1`] = `
+{
+  "required": true,
+}
+`;
+
 exports[`useValidatedBody > throws 400 Bad Request if body does not match validation schema 1`] = `
 {
   "stack": [],
