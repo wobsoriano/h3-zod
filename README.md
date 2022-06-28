@@ -22,13 +22,13 @@ const app = createApp()
 app.use('/', async (req) => {
   // Validate body
   const body = await useValidatedBody(req, z.object({
-    name: z.string(),
-    age: z.number()
+    optional: z.string().optional(),
+    required: z.boolean()
   }))
 
   // Validate query
   const query = useValidatedQuery(req, z.object({
-    id: z.string().transform(id => parseInt(id, 10))
+    required: z.string()
   }))
 })
 ```
