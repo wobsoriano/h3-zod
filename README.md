@@ -33,6 +33,10 @@ app.use('/', async (req) => {
 })
 ```
 
+## Related
+
+- [h3-typebox](https://github.com/kevinmarrec/h3-typebox)
+
 ## License
 
 MIT
