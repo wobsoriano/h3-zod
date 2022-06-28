@@ -1,7 +1,7 @@
 {
   "name": "h3-zod",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "packageManager": "pnpm@7.3.0",
   "description": "",
   "author": "Robert Soriano <sorianorobertc@gmail.com>",
