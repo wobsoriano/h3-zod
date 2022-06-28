@@ -1,6 +1,5 @@
 {
   "name": "h3-zod",
-  "type": "module",
   "version": "0.1.1",
   "packageManager": "pnpm@7.3.0",
   "description": "TypeScript-first schema validation for h3.",
@@ -22,11 +21,11 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
+      "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     }
   },
-  "main": "./dist/index.mjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
