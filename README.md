@@ -33,6 +33,20 @@ app.use('/', async (req) => {
 })
 ```
 
+## Nuxt
+
+```ts
+// ~/server/api/todo.post.ts
+import { useValidatedBody, z } from 'h3-zod'
+
+export default defineEventHandler(async (event) => {
+  const body = await useValidatedBody(req, z.object({
+    optional: z.string().optional(),
+    required: z.boolean()
+  }))
+})
+```
+
 ## Related
 
 - [h3-typebox](https://github.com/kevinmarrec/h3-typebox)
