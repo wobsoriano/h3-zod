@@ -1,37 +1,36 @@
 lockfileVersion: 5.4
 
-importers:
+specifiers:
+  '@antfu/eslint-config': ^0.25.1
+  '@antfu/ni': ^0.16.2
+  '@types/supertest': ^2.0.12
+  bumpp: ^8.2.1
+  eslint: ^8.18.0
+  h3: ^0.7.21
+  pnpm: ^7.3.0
+  supertest: ^6.2.3
+  tsup: 6.0.1
+  typescript: ^4.7.4
+  vite: ^2.9.12
+  vitest: ^0.15.1
+  zod: ^3.17.3
 
-  .:
-    specifiers:
-      '@antfu/eslint-config': ^0.25.1
-      '@antfu/ni': ^0.16.2
-      '@types/supertest': ^2.0.12
-      bumpp: ^8.2.1
-      eslint: ^8.18.0
-      h3: ^0.7.10
-      pnpm: ^7.3.0
-      supertest: ^6.2.3
-      tsup: 6.0.1
-      typescript: ^4.7.4
-      vite: ^2.9.12
-      vitest: ^0.15.1
-      zod: ^3.17.3
-    dependencies:
-      h3: 0.7.10
-      zod: 3.17.3
-    devDependencies:
-      '@antfu/eslint-config': 0.25.1_b5e7v2qnwxfo6hmiq56u52mz3e
-      '@antfu/ni': 0.16.2
-      '@types/supertest': 2.0.12
-      bumpp: 8.2.1
-      eslint: 8.18.0
-      pnpm: 7.3.0
-      supertest: 6.2.3
-      tsup: 6.0.1_typescript@4.7.4
-      typescript: 4.7.4
-      vite: 2.9.12
-      vitest: 0.15.1
+dependencies:
+  h3: 0.7.21
+  zod: 3.17.3
+
+devDependencies:
+  '@antfu/eslint-config': 0.25.1_b5e7v2qnwxfo6hmiq56u52mz3e
+  '@antfu/ni': 0.16.2
+  '@types/supertest': 2.0.12
+  bumpp: 8.2.1
+  eslint: 8.18.0
+  pnpm: 7.3.0
+  supertest: 6.2.3
+  tsup: 6.0.1_typescript@4.7.4
+  typescript: 4.7.4
+  vite: 2.9.12
+  vitest: 0.15.1
 
 packages:
 
@@ -1694,13 +1693,13 @@ packages:
       slash: 3.0.0
     dev: true
 
-  /h3/0.7.10:
-    resolution: {integrity: sha512-HcUQxlOocG2uf6PQLu3Bxk0KSXcTuxSF6kRclFBDO7y74Ml0wCwTvmoN5zmrzoxbNHecDNUrcGr8qSNGcOqAHQ==}
+  /h3/0.7.21:
+    resolution: {integrity: sha512-F/qdr3JKh8zBLiZyiprH5kuzG6vjoTK3nFnIYFUIQPLsw755GI5JezAFc3HJxbgYlzawcGeJlmsw4xu2t/0n/Q==}
     dependencies:
       cookie-es: 0.5.0
       destr: 1.1.1
       radix3: 0.1.2
-      ufo: 0.8.4
+      ufo: 0.8.5
     dev: false
 
   /has-bigints/1.0.2:
@@ -2987,8 +2986,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ufo/0.8.4:
-    resolution: {integrity: sha512-/+BmBDe8GvlB2nIflWasLLAInjYG0bC9HRnfEpNi4sw77J2AJNnEVnTDReVrehoh825+Q/evF3THXTAweyam2g==}
+  /ufo/0.8.5:
+    resolution: {integrity: sha512-e4+UtA5IRO+ha6hYklwj6r7BjiGMxS0O+UaSg9HbaTefg4kMkzj4tXzEBajRR+wkxf+golgAWKzLbytCUDMJAA==}
     dev: false
 
   /unbox-primitive/1.0.2:

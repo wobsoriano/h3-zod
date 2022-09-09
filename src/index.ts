@@ -1,5 +1,5 @@
 import type { CompatibilityEvent } from 'h3'
-import { createError, useBody, useQuery } from 'h3'
+import { createError, getQuery, readBody } from 'h3'
 import { z } from 'zod'
 
 // copy of the private Zod utility type of ZodObject
@@ -15,7 +15,7 @@ export function useValidatedQuery<T extends TQuery>(
   event: CompatibilityEvent,
   schema: T,
 ) {
-  const query = useQuery(event)
+  const query = getQuery(event)
   const parsed = schema.safeParse(query)
 
   if (!parsed.success) {
@@ -34,7 +34,7 @@ export async function useValidatedBody<T extends TQuery>(
   event: CompatibilityEvent,
   schema: T,
 ) {
-  const body = await useBody(event)
+  const body = await readBody(event)
   const parsed = schema.safeParse(body)
 
   if (!parsed.success) {

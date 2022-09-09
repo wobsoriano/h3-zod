@@ -41,7 +41,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "h3": "^0.7.10",
+    "h3": "^0.7.21",
     "zod": "^3.17.3"
   },
   "devDependencies": {
