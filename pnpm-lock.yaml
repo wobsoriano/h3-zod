@@ -13,11 +13,11 @@ specifiers:
   typescript: ^4.7.4
   vite: ^2.9.12
   vitest: ^0.15.1
-  zod: ^3.17.3
+  zod: ^3.19.1
 
 dependencies:
   h3: 0.7.21
-  zod: 3.17.3
+  zod: 3.19.1
 
 devDependencies:
   '@antfu/eslint-config': 0.25.1_b5e7v2qnwxfo6hmiq56u52mz3e
@@ -3170,6 +3170,6 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /zod/3.17.3:
-    resolution: {integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==}
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
     dev: false
