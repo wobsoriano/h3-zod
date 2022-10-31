@@ -5,14 +5,22 @@ import { z } from 'zod'
 // copy of the private Zod utility type of ZodObject
 type UnknownKeysParam = 'passthrough' | 'strict' | 'strip'
 
-type TQuery<U extends UnknownKeysParam = any> =
-  | z.ZodObject<any, U>
-  | z.ZodUnion<[TQuery<U>, ...TQuery<U>[]]>
-  | z.ZodIntersection<TQuery<U>, TQuery<U>>
-  | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
-  | z.ZodEffects<z.ZodTypeAny>
+type Refined<T extends z.ZodType> = T extends z.ZodType<infer O>
+  ? z.ZodEffects<T, O, O>
+  : never
 
-export function useValidatedQuery<T extends TQuery>(
+/**
+ * @desc The type allowed on the top level of Middlewares and Endpoints
+ * @param U — only "strip" is allowed for Middlewares due to intersection issue (Zod) #600
+ * */
+export type IOSchema<U extends UnknownKeysParam = any> =
+  | z.ZodObject<any, U>
+  | z.ZodUnion<[IOSchema<U>, ...IOSchema<U>[]]>
+  | z.ZodIntersection<IOSchema<U>, IOSchema<U>>
+  | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
+  | Refined<z.ZodObject<any, U>>
+
+export function useValidatedQuery<T extends IOSchema>(
   event: CompatibilityEvent,
   schema: T,
 ) {
@@ -31,7 +39,7 @@ export function useValidatedQuery<T extends TQuery>(
   return parsed.data as z.infer<T>
 }
 
-export async function useValidatedBody<T extends TQuery>(
+export async function useValidatedBody<T extends IOSchema>(
   event: CompatibilityEvent,
   schema: T,
 ) {
