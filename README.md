@@ -15,11 +15,11 @@ npm install h3-zod
 ```ts
 import { createServer } from 'http'
 import { createApp } from 'h3'
-import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+import { eventHandler, useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
 const app = createApp()
 
-app.use('/', async (req) => {
+app.use('/', eventHandler(async (req) => {
   // Validate body
   const body = await useValidatedBody(req, z.object({
     optional: z.string().optional(),
@@ -30,7 +30,7 @@ app.use('/', async (req) => {
   const query = useValidatedQuery(req, z.object({
     required: z.string()
   }))
-})
+}))
 ```
 
 with Nuxt
