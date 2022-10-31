@@ -1,8 +1,8 @@
 import type { SuperTest, Test } from 'supertest'
 import supertest from 'supertest'
 import { beforeEach, describe, expect, it } from 'vitest'
-import type { App, CompatibilityEvent } from 'h3'
-import { createApp } from 'h3'
+import type { App } from 'h3'
+import { createApp, eventHandler, toNodeListener } from 'h3'
 import { useValidatedBody, z } from '../src'
 
 describe('useValidatedBody', () => {
@@ -11,7 +11,7 @@ describe('useValidatedBody', () => {
 
   beforeEach(() => {
     app = createApp({ debug: false })
-    request = supertest(app)
+    request = supertest(toNodeListener(app))
   })
 
   const bodySchema = z.object({
@@ -20,7 +20,7 @@ describe('useValidatedBody', () => {
   })
 
   it('returns 200 OK if body matches validation schema', async () => {
-    app.use('/validate', async (req: CompatibilityEvent) => await useValidatedBody(req, bodySchema))
+    app.use('/validate', eventHandler(event => useValidatedBody(event, bodySchema)))
 
     const res = await request.post('/validate').send({ required: true })
 
@@ -29,7 +29,7 @@ describe('useValidatedBody', () => {
   })
 
   it('throws 400 Bad Request if body does not match validation schema', async () => {
-    app.use('/validate', async (req: CompatibilityEvent) => await useValidatedBody(req, bodySchema))
+    app.use('/validate', eventHandler(event => useValidatedBody(event, bodySchema)))
 
     const res = await request.post('/validate').send({})
 
