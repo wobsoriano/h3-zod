@@ -5,7 +5,7 @@ specifiers:
   '@types/supertest': ^2.0.12
   bumpp: ^8.2.1
   eslint: ^8.25.0
-  h3: ^0.7.21
+  h3: ^0.8.6
   supertest: ^6.3.0
   tsup: 6.0.1
   typescript: ^4.7.4
@@ -21,7 +21,7 @@ devDependencies:
   '@types/supertest': 2.0.12
   bumpp: 8.2.1
   eslint: 8.25.0
-  h3: 0.7.21
+  h3: 0.8.6
   supertest: 6.3.0
   tsup: 6.0.1_typescript@4.7.4
   typescript: 4.7.4
@@ -859,8 +859,8 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
-  /destr/1.1.1:
-    resolution: {integrity: sha512-QqkneF8LrYmwATMdnuD2MLI3GHQIcBnG6qFC2q9bSH430VTCDAVjcspPmUaKhPGtAtPAftIUFqY1obQYQuwmbg==}
+  /destr/1.2.0:
+    resolution: {integrity: sha512-JG+cG4ZPB1L27sl2C2URg8MIOmIUtTbE5wEx02BpmrTCqg/hXxFKXsYsnODl5PdpqNRaS1KQGUQ56V8jk8XpYQ==}
     dev: true
 
   /dezalgo/1.0.3:
@@ -1830,13 +1830,13 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
-  /h3/0.7.21:
-    resolution: {integrity: sha512-F/qdr3JKh8zBLiZyiprH5kuzG6vjoTK3nFnIYFUIQPLsw755GI5JezAFc3HJxbgYlzawcGeJlmsw4xu2t/0n/Q==}
+  /h3/0.8.6:
+    resolution: {integrity: sha512-CSWNOKa3QGo67rFU2PhbFTp0uPJtilNji2Z0pMiSRQt3+OkIW0u3E1WMJqIycLqaTgb9JyFqH/S4mcTyyGtvyQ==}
     dependencies:
       cookie-es: 0.5.0
-      destr: 1.1.1
-      radix3: 0.1.2
-      ufo: 0.8.5
+      destr: 1.2.0
+      radix3: 0.2.1
+      ufo: 0.8.6
     dev: true
 
   /has-bigints/1.0.2:
@@ -2679,8 +2679,8 @@ packages:
     resolution: {integrity: sha512-dB15eXv3p2jDlbOiNLyMabYg1/sXvppd8DP2J3EOCQ0AkuSXCW2tP7mnVouVLJKgUMY6yP0kcQDVpLCN13h4Xg==}
     dev: true
 
-  /radix3/0.1.2:
-    resolution: {integrity: sha512-Mpfd/OuX0zoJ6ojLD/RTOHvJPg6e6PjINtmYzV87kIXc5iUtDz34i7gg4SV4XjqRJTmSiYO/g9i/mKWGf4z8wg==}
+  /radix3/0.2.1:
+    resolution: {integrity: sha512-FnhArTl5Tq7dodiLeSPKrDUyCQuJqEncP8cKdyy399g8F/cz7GH6FmzA3Rkosu2IZMkpswFFwXfb2ERSiL06pg==}
     dev: true
 
   /react-is/16.13.1:
@@ -3166,8 +3166,8 @@ packages:
     hasBin: true
     dev: true
 
-  /ufo/0.8.5:
-    resolution: {integrity: sha512-e4+UtA5IRO+ha6hYklwj6r7BjiGMxS0O+UaSg9HbaTefg4kMkzj4tXzEBajRR+wkxf+golgAWKzLbytCUDMJAA==}
+  /ufo/0.8.6:
+    resolution: {integrity: sha512-fk6CmUgwKCfX79EzcDQQpSCMxrHstvbLswFChHS0Vump+kFkw7nJBfTZoC1j0bOGoY9I7R3n2DGek5ajbcYnOw==}
     dev: true
 
   /unbox-primitive/1.0.2:

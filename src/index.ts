@@ -1,4 +1,4 @@
-import type { CompatibilityEvent } from 'h3'
+import type { H3Event } from 'h3'
 import { createError, getQuery, readBody } from 'h3'
 import { z } from 'zod'
 
@@ -21,7 +21,7 @@ export type IOSchema<U extends UnknownKeysParam = any> =
   | Refined<z.ZodObject<any, U>>
 
 export function useValidatedQuery<T extends IOSchema>(
-  event: CompatibilityEvent,
+  event: H3Event,
   schema: T,
 ) {
   const query = getQuery(event)
@@ -40,7 +40,7 @@ export function useValidatedQuery<T extends IOSchema>(
 }
 
 export async function useValidatedBody<T extends IOSchema>(
-  event: CompatibilityEvent,
+  event: H3Event,
   schema: T,
 ) {
   const body = await readBody(event)
