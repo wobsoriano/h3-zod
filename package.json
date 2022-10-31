@@ -40,8 +40,10 @@
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "h3": "<0.8.0"
+  },
   "dependencies": {
-    "h3": "^0.7.21",
     "zod": "^3.19.1"
   },
   "devDependencies": {
@@ -50,6 +52,7 @@
     "@types/supertest": "^2.0.12",
     "bumpp": "^8.2.1",
     "eslint": "^8.25.0",
+    "h3": "^0.7.21",
     "pnpm": "^7.3.0",
     "supertest": "^6.3.0",
     "tsup": "6.0.1",
