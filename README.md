@@ -19,15 +19,15 @@ import { eventHandler, useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
 const app = createApp()
 
-app.use('/', eventHandler(async (req) => {
+app.use('/', eventHandler(async (event) => {
   // Validate body
-  const body = await useValidatedBody(req, z.object({
+  const body = await useValidatedBody(event, z.object({
     optional: z.string().optional(),
     required: z.boolean()
   }))
 
   // Validate query
-  const query = useValidatedQuery(req, z.object({
+  const query = useValidatedQuery(event, z.object({
     required: z.string()
   }))
 }))
