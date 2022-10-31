@@ -10,6 +10,7 @@ type TQuery<U extends UnknownKeysParam = any> =
   | z.ZodUnion<[TQuery<U>, ...TQuery<U>[]]>
   | z.ZodIntersection<TQuery<U>, TQuery<U>>
   | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
+  | z.ZodEffects<z.ZodTypeAny>
 
 export function useValidatedQuery<T extends TQuery>(
   event: CompatibilityEvent,
