@@ -45,16 +45,6 @@ export default defineEventHandlerWithSchema({
       required: z.boolean()
     })
   },
-  // Optional
-  errorHandler(error, event) {
-    // Format your error here or whatever
-    throw createError({
-      statusCode: 400,
-      statusMessage: JSON.stringify({
-        error,
-      }),
-    })
-  }
 })
 ```
 

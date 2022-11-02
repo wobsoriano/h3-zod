@@ -20,18 +20,30 @@ export type IOSchema<U extends UnknownKeysParam = any> =
   | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
   | Refined<z.ZodObject<any, U>>
 
+/**
+ *
+ * @param event H3 Event
+ * @param schema Zod Schema
+ * @param errorHandler Use your own error handler instead of throwing an H3Error
+ */
 export function useValidatedQuery<T extends IOSchema>(
   event: H3Event,
   schema: T,
+  errorHandler?: (error: z.ZodIssue[]) => void,
 ) {
   const query = getQuery(event)
   const parsed = schema.safeParse(query)
 
   if (!parsed.success) {
+    if (errorHandler) {
+      errorHandler(parsed.error.issues)
+      return
+    }
+
     throw createError({
       statusCode: 400,
       statusMessage: JSON.stringify({
-        errors: parsed.error.errors,
+        errors: parsed.error.issues,
       }),
     })
   }
@@ -39,18 +51,30 @@ export function useValidatedQuery<T extends IOSchema>(
   return parsed.data as z.infer<T>
 }
 
+/**
+ *
+ * @param event H3 Event
+ * @param schema Zod Schema
+ * @param errorHandler Use your own error handler instead of throwing an H3Error
+ */
 export async function useValidatedBody<T extends IOSchema>(
   event: H3Event,
   schema: T,
+  errorHandler?: (error: z.ZodIssue[]) => void,
 ) {
   const body = await readBody(event)
   const parsed = schema.safeParse(body)
 
   if (!parsed.success) {
+    if (errorHandler) {
+      errorHandler(parsed.error.issues)
+      return
+    }
+
     throw createError({
       statusCode: 400,
       statusMessage: JSON.stringify({
-        errors: parsed.error.errors,
+        errors: parsed.error.issues,
       }),
     })
   }
@@ -66,7 +90,7 @@ interface RequestSchemas<
   query?: TQuery
 }
 
-interface SchemaError {
+interface RequestIssues {
   body: z.ZodIssue[] | null
   query: z.ZodIssue[] | null
 }
@@ -81,10 +105,10 @@ export function defineEventHandlerWithSchema<
 }: {
   handler: EventHandler
   schema: RequestSchemas<TBody, TQuery>
-  errorHandler?: (error: SchemaError, event: H3Event) => void
+  errorHandler?: (errors: RequestIssues, event: H3Event) => void
 }) {
   return eventHandler(async (event) => {
-    const error: SchemaError = {
+    const errors: RequestIssues = {
       body: null,
       query: null,
     }
@@ -102,7 +126,7 @@ export function defineEventHandlerWithSchema<
       const parsed = schema.query.safeParse(query)
 
       if (!parsed.success)
-        error.query = parsed.error.errors
+        errors.query = parsed.error.issues
       else
         parsedData.query = parsed.data as z.infer<TQuery>
     }
@@ -112,21 +136,21 @@ export function defineEventHandlerWithSchema<
       const parsed = schema.body.safeParse(body)
 
       if (!parsed.success)
-        error.body = parsed.error.errors
+        errors.body = parsed.error.issues
       else
         parsedData.body = parsed.data as z.infer<TBody>
     }
 
-    if (error.body || error.query) {
+    if (errors.body || errors.query) {
       if (errorHandler) {
-        errorHandler(error, event)
+        errorHandler(errors, event)
         return
       }
 
       throw createError({
         statusCode: 400,
         statusMessage: JSON.stringify({
-          error,
+          errors,
         }),
       })
     }
