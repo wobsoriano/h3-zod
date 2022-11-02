@@ -32,7 +32,6 @@ export default defineEventHandler(async (event) => {
 with event handler wrapper (fastify like routes)
 
 ```ts
-// ~/server/api/todo.post.ts
 import { defineEventHandlerWithSchema, z } from 'h3-zod'
 
 export default defineEventHandlerWithSchema({
