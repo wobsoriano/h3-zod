@@ -13,9 +13,13 @@ npm install h3-zod
 ## Usage
 
 ```ts
-import { createServer } from 'http'
-import { createApp } from 'h3'
-import { eventHandler, useValidatedBody, useValidatedQuery, withValidatedApiRoute, z } from 'h3-zod'
+import {
+  eventHandler,
+  useValidatedBody,
+  useValidatedQuery,
+  withValidatedApiRoute,
+  z
+} from 'h3-zod'
 
 const app = createApp()
 
