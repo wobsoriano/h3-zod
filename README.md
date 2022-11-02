@@ -15,9 +15,7 @@ npm install h3-zod
 ```ts
 import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
-const app = createApp()
-
-app.use('/', eventHandler(async (event) => {
+export default defineEventHandler(async (event) => {
   // Validate body
   const body = await useValidatedBody(event, z.object({
     optional: z.string().optional(),
@@ -28,43 +26,10 @@ app.use('/', eventHandler(async (event) => {
   const query = useValidatedQuery(event, z.object({
     required: z.string()
   }))
-}))
+})
 ```
 
 with event handler wrapper (fastify like routes)
-
-```ts
-import { defineEventHandlerWithSchema, z } from 'h3-zod'
-
-app.use('/api/login', defineEventHandlerWithSchema({
-  async handler(event) {
-    const {
-      body: { email, password },
-      query: { redirect }
-    } = event.context.parsedData
-
-    const user = await authenticateUser(email, password)
-
-    if (redirect) {
-      sendRedirect(event, redirect, 302)
-      return
-    }
-
-    return { user }
-  },
-  schema: {
-    body: z.object({
-      email: z.email(),
-      password: z.string(),
-    }),
-    query: z.object({
-      redirect: z.string().optional(),
-    }),
-  }
-}))
-```
-
-with Nuxt
 
 ```ts
 // ~/server/api/todo.post.ts
@@ -78,6 +43,16 @@ export default defineEventHandlerWithSchema({
     body: z.object({
       optional: z.string().optional(),
       required: z.boolean()
+    })
+  },
+  // Optional
+  errorHandler(error, event) {
+    // Format your error here or whatever
+    throw createError({
+      statusCode: 400,
+      statusMessage: JSON.stringify({
+        error,
+      }),
     })
   }
 })

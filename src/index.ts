@@ -81,10 +81,10 @@ export function defineEventHandlerWithSchema<
 }: {
   handler: EventHandler
   schema: RequestSchemas<TBody, TQuery>
-  errorHandler?: (error: SchemaError) => void
+  errorHandler?: (error: SchemaError, event: H3Event) => void
 }) {
   return eventHandler(async (event) => {
-    const errors: SchemaError = {
+    const error: SchemaError = {
       body: null,
       query: null,
     }
@@ -102,7 +102,7 @@ export function defineEventHandlerWithSchema<
       const parsed = schema.query.safeParse(query)
 
       if (!parsed.success)
-        errors.query = parsed.error.errors
+        error.query = parsed.error.errors
       else
         parsedData.query = parsed.data as z.infer<TQuery>
     }
@@ -112,21 +112,21 @@ export function defineEventHandlerWithSchema<
       const parsed = schema.body.safeParse(body)
 
       if (!parsed.success)
-        errors.body = parsed.error.errors
+        error.body = parsed.error.errors
       else
         parsedData.body = parsed.data as z.infer<TBody>
     }
 
-    if (errors.body || errors.query) {
+    if (error.body || error.query) {
       if (errorHandler) {
-        errorHandler(errors)
+        errorHandler(error, event)
         return
       }
 
       throw createError({
         statusCode: 400,
         statusMessage: JSON.stringify({
-          errors,
+          error,
         }),
       })
     }
