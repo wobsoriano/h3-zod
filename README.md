@@ -38,7 +38,7 @@ app.use('/', eventHandler(async (event) => {
 
 // Validate query/body
 app.use('/api/login', withValidatedApiRoute(
-  defineEventHandler(async (event) => {
+  eventHandler(async (event) => {
     const {
       body: { email, password },
       query: { redirect }
