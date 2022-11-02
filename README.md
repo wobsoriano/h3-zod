@@ -31,23 +31,13 @@ app.use('/', eventHandler(async (event) => {
 }))
 ```
 
-with event handler wrapper
+with event handler wrapper (fastify like routes)
 
 ```ts
-import { withValidatedApiRoute, z } from 'h3-zod'
+import { defineEventHandlerWithSchema, z } from 'h3-zod'
 
-const schemas = {
-  body: z.object({
-    email: z.email(),
-    password: z.string(),
-  }),
-  query: z.object({
-    redirect: z.string().optional(),
-  }),
-}
-
-app.use('/api/login', withValidatedApiRoute(
-  eventHandler(async (event) => {
+app.use('/api/login', defineEventHandlerWithSchema({
+  async handler(event) {
     const {
       body: { email, password },
       query: { redirect }
@@ -61,22 +51,35 @@ app.use('/api/login', withValidatedApiRoute(
     }
 
     return { user }
-  }),
-  schemas,
-))
+  },
+  schema: {
+    body: z.object({
+      email: z.email(),
+      password: z.string(),
+    }),
+    query: z.object({
+      redirect: z.string().optional(),
+    }),
+  }
+}))
 ```
 
 with Nuxt
 
 ```ts
 // ~/server/api/todo.post.ts
-import { useValidatedBody, z } from 'h3-zod'
+import { defineEventHandlerWithSchema, z } from 'h3-zod'
 
-export default defineEventHandler(async (event) => {
-  const body = await useValidatedBody(event, z.object({
-    optional: z.string().optional(),
-    required: z.boolean()
-  }))
+export default defineEventHandlerWithSchema({
+  async handler(event) {
+    return { parsed: event.context.parsedData }
+  },
+  schema: {
+    body: z.object({
+      optional: z.string().optional(),
+      required: z.boolean()
+    })
+  }
 })
 ```
 

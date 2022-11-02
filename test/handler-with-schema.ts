@@ -2,10 +2,10 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import type { SuperTest, Test } from 'supertest'
 import supertest from 'supertest'
 import type { App } from 'h3'
-import { createApp, eventHandler, toNodeListener } from 'h3'
-import { withValidatedApiRoute, z } from '../src'
+import { createApp, toNodeListener } from 'h3'
+import { defineEventHandlerWithSchema, z } from '../src'
 
-describe('withValidatedApiRoute', () => {
+describe('defineEventHandlerWithSchema', () => {
   let app: App
   let request: SuperTest<Test>
 
@@ -24,15 +24,15 @@ describe('withValidatedApiRoute', () => {
   })
 
   it('returns 200 OK if query/body matches validation schema', async () => {
-    app.use('/validate', withValidatedApiRoute(
-      eventHandler(() => {
+    app.use('/validate', defineEventHandlerWithSchema({
+      handler() {
         return { ok: true }
-      }),
-      {
+      },
+      schema: {
         body: bodySchema,
         query: querySchema,
       },
-    ))
+    }))
 
     const res = await request.post('/validate?required=true').send({
       required: true,
@@ -43,15 +43,15 @@ describe('withValidatedApiRoute', () => {
   })
 
   it('throws 400 Bad Request if querybody does not match validation schema', async () => {
-    app.use('/validate', withValidatedApiRoute(
-      eventHandler(() => {
+    app.use('/validate', defineEventHandlerWithSchema({
+      handler() {
         return { ok: true }
-      }),
-      {
+      },
+      schema: {
         body: bodySchema,
         query: querySchema,
       },
-    ))
+    }))
 
     const res = await request.post('/validate?required=true')
 
@@ -60,15 +60,15 @@ describe('withValidatedApiRoute', () => {
   })
 
   it('passes parsed data to `event.context`', async () => {
-    app.use('/validate', withValidatedApiRoute(
-      eventHandler((event) => {
+    app.use('/validate', defineEventHandlerWithSchema({
+      handler(event) {
         return event.context.parsedData
-      }),
-      {
+      },
+      schema: {
         body: bodySchema,
         query: querySchema,
       },
-    ))
+    }))
 
     const res = await request.post('/validate?required=true').send({
       required: true,

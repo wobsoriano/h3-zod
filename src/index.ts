@@ -66,27 +66,40 @@ interface RequestSchemas<
   query?: TQuery
 }
 
-export function withValidatedApiRoute<
+interface SchemaError {
+  body: z.ZodIssue[] | null
+  query: z.ZodIssue[] | null
+}
+
+export function defineEventHandlerWithSchema<
   TBody extends IOSchema,
   TQuery extends IOSchema,
->(
-  handler: EventHandler,
-  schemas: RequestSchemas<TBody, TQuery>,
-) {
+>({
+  handler,
+  schema,
+  errorHandler,
+}: {
+  handler: EventHandler
+  schema: RequestSchemas<TBody, TQuery>
+  errorHandler?: (error: SchemaError) => void
+}) {
   return eventHandler(async (event) => {
-    const errors: Record<string, z.ZodIssue[] | null> = {
+    const errors: SchemaError = {
       body: null,
       query: null,
     }
 
-    const parsedData = {
-      body: null as z.infer<TBody> | null,
-      query: null as z.infer<TQuery> | null,
+    const parsedData: {
+      body: z.infer<TBody> | null
+      query: z.infer<TQuery> | null
+    } = {
+      body: null,
+      query: null,
     }
 
-    if (schemas.query) {
+    if (schema.query) {
       const query = getQuery(event)
-      const parsed = schemas.query.safeParse(query)
+      const parsed = schema.query.safeParse(query)
 
       if (!parsed.success)
         errors.query = parsed.error.errors
@@ -94,9 +107,9 @@ export function withValidatedApiRoute<
         parsedData.query = parsed.data as z.infer<TQuery>
     }
 
-    if (schemas.body && isMethod(event, 'POST')) {
+    if (schema.body && isMethod(event, 'POST')) {
       const body = await readBody(event)
-      const parsed = schemas.body.safeParse(body)
+      const parsed = schema.body.safeParse(body)
 
       if (!parsed.success)
         errors.body = parsed.error.errors
@@ -105,6 +118,11 @@ export function withValidatedApiRoute<
     }
 
     if (errors.body || errors.query) {
+      if (errorHandler) {
+        errorHandler(errors)
+        return
+      }
+
       throw createError({
         statusCode: 400,
         statusMessage: JSON.stringify({
