@@ -17,7 +17,6 @@ import {
   eventHandler,
   useValidatedBody,
   useValidatedQuery,
-  withValidatedApiRoute,
   z
 } from 'h3-zod'
 
@@ -35,8 +34,23 @@ app.use('/', eventHandler(async (event) => {
     required: z.string()
   }))
 }))
+```
 
-// Validate query/body
+with event handler wrapper
+
+```ts
+import { eventHandler, withValidatedApiRoute, z } from 'h3-zod'
+
+const schemas = {
+  body: z.object({
+    email: z.email(),
+    password: z.string(),
+  }),
+  query: z.object({
+    redirect: z.string().optional(),
+  }),
+}
+
 app.use('/api/login', withValidatedApiRoute(
   eventHandler(async (event) => {
     const {
@@ -53,15 +67,7 @@ app.use('/api/login', withValidatedApiRoute(
 
     return { user }
   }),
-  {
-    body: z.object({
-      email: z.email(),
-      password: z.string(),
-    }),
-    query: z.object({
-      redirect: z.string().optional(),
-    }),
-  },
+  schemas,
 ))
 ```
 
