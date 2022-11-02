@@ -15,7 +15,7 @@ npm install h3-zod
 ```ts
 import { createServer } from 'http'
 import { createApp } from 'h3'
-import { eventHandler, useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+import { eventHandler, useValidatedBody, useValidatedQuery, withValidatedApiRoute, z } from 'h3-zod'
 
 const app = createApp()
 
@@ -31,6 +31,34 @@ app.use('/', eventHandler(async (event) => {
     required: z.string()
   }))
 }))
+
+// Validate query/body
+app.use('/api/login', withValidatedApiRoute(
+  defineEventHandler(async (event) => {
+    const {
+      body: { email, password },
+      query: { redirect }
+    } = event.context.parsedData
+
+    const user = await authenticateUser(email, password)
+
+    if (redirect) {
+      sendRedirect(event, redirect, 302)
+      return
+    }
+
+    return { user }
+  }),
+  {
+    body: z.object({
+      email: z.email(),
+      password: z.string(),
+    }),
+    query: z.object({
+      redirect: z.string().optional(),
+    }),
+  },
+))
 ```
 
 with Nuxt
