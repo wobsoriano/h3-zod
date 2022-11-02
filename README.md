@@ -32,17 +32,20 @@ export default defineEventHandler(async (event) => {
 with event handler wrapper (fastify like routes)
 
 ```ts
-// ~/server/api/todo.post.ts
 import { defineEventHandlerWithSchema, z } from 'h3-zod'
 
 export default defineEventHandlerWithSchema({
   async handler(event) {
+    // event.context.parsedData contains the parsed data from schema
     return { parsed: event.context.parsedData }
   },
   schema: {
     body: z.object({
       optional: z.string().optional(),
       required: z.boolean()
+    }),
+    query: z.object({
+      required: z.string()
     })
   },
 })
