@@ -48,6 +48,8 @@ export default defineEventHandlerWithSchema({
 })
 ```
 
+All of these functions throw an H3Error instance when parsing fails. You can use the optional `errorHandler` argument to override the error messages. You can use a third-party lib like [zod-validation-error](https://github.com/causaly/zod-validation-error) to have user-friendly readable messages.
+
 ## Related
 
 - [h3-typebox](https://github.com/kevinmarrec/h3-typebox)
