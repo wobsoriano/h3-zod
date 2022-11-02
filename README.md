@@ -13,12 +13,7 @@ npm install h3-zod
 ## Usage
 
 ```ts
-import {
-  eventHandler,
-  useValidatedBody,
-  useValidatedQuery,
-  z
-} from 'h3-zod'
+import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
 const app = createApp()
 
@@ -39,7 +34,7 @@ app.use('/', eventHandler(async (event) => {
 with event handler wrapper
 
 ```ts
-import { eventHandler, withValidatedApiRoute, z } from 'h3-zod'
+import { withValidatedApiRoute, z } from 'h3-zod'
 
 const schemas = {
   body: z.object({
