@@ -36,6 +36,7 @@ import { defineEventHandlerWithSchema, z } from 'h3-zod'
 
 export default defineEventHandlerWithSchema({
   async handler(event) {
+    // event.context.parsedData contains the parsed data from schema
     return { parsed: event.context.parsedData }
   },
   schema: {
