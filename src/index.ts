@@ -1,5 +1,5 @@
-import { EventHandler, H3Event, isMethod } from 'h3'
-import { createError, eventHandler, getQuery, readBody } from 'h3'
+import type { EventHandler, H3Event } from 'h3'
+import { createError, eventHandler, getQuery, isMethod, readBody } from 'h3'
 import { z } from 'zod'
 
 // copy of the private Zod utility type of ZodObject
@@ -80,8 +80,8 @@ export function withValidatedApiRoute<
     }
 
     const parsedData = {
-      body: null as z.infer<TBody>,
-      query: null as z.infer<TQuery>,
+      body: null as z.infer<TBody> | null,
+      query: null as z.infer<TQuery> | null,
     }
 
     if (schemas.query) {
