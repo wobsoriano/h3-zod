@@ -43,6 +43,9 @@ export default defineEventHandlerWithSchema({
     body: z.object({
       optional: z.string().optional(),
       required: z.boolean()
+    }),
+    query: z.object({
+      required: z.string()
     })
   },
   // Optional
