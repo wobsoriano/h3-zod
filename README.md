@@ -41,7 +41,12 @@ export default defineEventHandler(async (event) => {
 Helpers that throw 400 error when parsing fails:
 
 ```ts
-import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+import {
+  useValidatedBody,
+  useValidatedParams,
+  useValidatedQuery,
+  z
+} from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
   const query = useValidatedQuery(event, z.object({
