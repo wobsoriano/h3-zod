@@ -46,6 +46,17 @@ export default defineEventHandler(async (event) => {
 })
 ```
 
+You can also pass an object schema:
+
+```ts
+export default defineEventHandler(async (event) => {
+  const body = await useValidatedBody(event, {
+    optional: z.string().optional(),
+    required: z.boolean()
+  })
+})
+```
+
 ## Related
 
 - [h3-typebox](https://github.com/kevinmarrec/h3-typebox)
