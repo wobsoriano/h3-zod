@@ -15,7 +15,12 @@ npm install h3-zod
 Helpers that don't throw when parsing fails:
 
 ```ts
-import { useSafeValidatedBody, useSafeValidatedQuery, z } from 'h3-zod'
+import {
+  useSafeValidatedBody,
+  useSafeValidatedParams,
+  useSafeValidatedQuery,
+  z
+} from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
   const query = useSafeValidatedQuery(event, z.object({
@@ -26,6 +31,10 @@ export default defineEventHandler(async (event) => {
     optional: z.string().optional(),
     required: z.boolean()
   }))
+
+  const params = useSafeValidatedParams(event, {
+    id: z.number()
+  })
 })
 ```
 
@@ -43,6 +52,10 @@ export default defineEventHandler(async (event) => {
     optional: z.string().optional(),
     required: z.boolean()
   }))
+
+  const params = useValidatedParams(event, {
+    id: z.number()
+  })
 })
 ```
 
