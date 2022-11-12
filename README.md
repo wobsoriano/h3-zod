@@ -13,45 +13,32 @@ npm install h3-zod
 ## Usage
 
 ```ts
-import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+import { useSafeValidatedBody, useSafeValidatedQuery, useValidatedBody, useValidatedQuery, z } from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
-  // Validate body
+  // Validate query. Throws 400 error.
+  const query = useValidatedQuery(event, z.object({
+    required: z.string()
+  }))
+
+  // Validate query. Doesn't throw.
+  const query = useSafeValidatedQuery(event, z.object({
+    required: z.string()
+  }))
+
+  // Validate body. Throws 400 error.
   const body = await useValidatedBody(event, z.object({
     optional: z.string().optional(),
     required: z.boolean()
   }))
 
-  // Validate query
-  const query = useValidatedQuery(event, z.object({
-    required: z.string()
+  // Validate body. Doesn't throw.
+  const body = await useSafeValidatedBody(event, z.object({
+    optional: z.string().optional(),
+    required: z.boolean()
   }))
 })
 ```
-
-with event handler wrapper (fastify like routes)
-
-```ts
-import { defineEventHandlerWithSchema, z } from 'h3-zod'
-
-export default defineEventHandlerWithSchema({
-  async handler(event) {
-    // event.context.parsedData contains the parsed data from schema
-    return { parsed: event.context.parsedData }
-  },
-  schema: {
-    body: z.object({
-      optional: z.string().optional(),
-      required: z.boolean()
-    }),
-    query: z.object({
-      required: z.string()
-    })
-  },
-})
-```
-
-All of these functions throw an H3Error instance when parsing fails. You can use the optional `errorHandler` argument to override the error messages.
 
 ## Related
 
