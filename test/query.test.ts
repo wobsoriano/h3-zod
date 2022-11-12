@@ -3,7 +3,7 @@ import type { SuperTest, Test } from 'supertest'
 import supertest from 'supertest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
-import { useValidatedQuery, z } from '../src'
+import { useSafeValidatedQuery, useValidatedQuery, z } from '../src'
 
 describe('useValidatedQuery', () => {
   let app: App
@@ -33,6 +33,15 @@ describe('useValidatedQuery', () => {
     const res = await request.get('/validate')
 
     expect(res.status).toEqual(400)
+    expect(res.body).toMatchSnapshot()
+  })
+
+  it('doesn\'t throw 400 Bad Request if query does not match validation schema', async () => {
+    app.use('/validate', eventHandler(event => useSafeValidatedQuery(event, querySchema)))
+
+    const res = await request.get('/validate')
+
+    expect(res.status).toEqual(200)
     expect(res.body).toMatchSnapshot()
   })
 })

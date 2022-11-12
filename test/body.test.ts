@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
-import { useValidatedBody, z } from '../src'
+import { useSafeValidatedBody, useValidatedBody, z } from '../src'
 
 describe('useValidatedBody', () => {
   let app: App
@@ -34,6 +34,15 @@ describe('useValidatedBody', () => {
     const res = await request.post('/validate').send({})
 
     expect(res.status).toEqual(400)
+    expect(res.body).toMatchSnapshot()
+  })
+
+  it('doesn\'t throw 400 Bad Request if body does not match validation schema', async () => {
+    app.use('/validate', eventHandler(event => useSafeValidatedBody(event, bodySchema)))
+
+    const res = await request.post('/validate').send({})
+
+    expect(res.status).toEqual(200)
     expect(res.body).toMatchSnapshot()
   })
 })

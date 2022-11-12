@@ -1,5 +1,25 @@
 // Vitest Snapshot v1
 
+exports[`useValidatedQuery > doesn't throw 400 Bad Request if query does not match validation schema 1`] = `
+{
+  "error": {
+    "issues": [
+      {
+        "code": "invalid_type",
+        "expected": "string",
+        "message": "Required",
+        "path": [
+          "required",
+        ],
+        "received": "undefined",
+      },
+    ],
+    "name": "ZodError",
+  },
+  "success": false,
+}
+`;
+
 exports[`useValidatedQuery > returns 200 OK if query matches validation schema 1`] = `
 {
   "required": "",
