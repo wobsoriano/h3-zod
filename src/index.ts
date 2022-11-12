@@ -43,7 +43,7 @@ export function useValidatedQuery<T extends Schema | z.ZodRawShape>(
       statusCode: DEFAULT_ERROR_STATUS,
       statusText: DEFAULT_ERROR_MESSAGE,
       data: JSON.stringify({
-        errors: error as z.ZodIssue[],
+        errors: error as any,
       }),
     })
   }
@@ -88,7 +88,7 @@ export async function useValidatedBody<T extends Schema | z.ZodRawShape>(
       statusCode: DEFAULT_ERROR_STATUS,
       statusText: DEFAULT_ERROR_MESSAGE,
       data: JSON.stringify({
-        errors: error as z.ZodIssue[],
+        errors: error as any,
       }),
     })
   }

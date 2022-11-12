@@ -12,28 +12,34 @@ npm install h3-zod
 
 ## Usage
 
+Helpers that don't throw when parsing fails:
+
 ```ts
-import { useSafeValidatedBody, useSafeValidatedQuery, useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+import { useSafeValidatedBody, useSafeValidatedQuery, z } from 'h3-zod'
 
 export default defineEventHandler(async (event) => {
-  // Validate query. Throws 400 error.
-  const query = useValidatedQuery(event, z.object({
-    required: z.string()
-  }))
-
-  // Validate query. Doesn't throw.
   const query = useSafeValidatedQuery(event, z.object({
     required: z.string()
   }))
 
-  // Validate body. Throws 400 error.
-  const body = await useValidatedBody(event, z.object({
+  const body = await useSafeValidatedBody(event, z.object({
     optional: z.string().optional(),
     required: z.boolean()
   }))
+})
+```
 
-  // Validate body. Doesn't throw.
-  const body = await useSafeValidatedBody(event, z.object({
+Helpers that throw 400 error when parsing fails:
+
+```ts
+import { useValidatedBody, useValidatedQuery, z } from 'h3-zod'
+
+export default defineEventHandler(async (event) => {
+  const query = useValidatedQuery(event, z.object({
+    required: z.string()
+  }))
+
+  const body = await useValidatedBody(event, z.object({
     optional: z.string().optional(),
     required: z.boolean()
   }))
