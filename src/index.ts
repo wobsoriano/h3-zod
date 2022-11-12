@@ -1,164 +1,111 @@
-import type { EventHandler, H3Event } from 'h3'
-import { createError, eventHandler, getQuery, isMethod, readBody } from 'h3'
+import type { H3Event } from 'h3'
+import { createError, getQuery, readBody } from 'h3'
 import { z } from 'zod'
 
-// copy of the private Zod utility type of ZodObject
 type UnknownKeysParam = 'passthrough' | 'strict' | 'strip'
 
 type Refined<T extends z.ZodType> = T extends z.ZodType<infer O>
   ? z.ZodEffects<T, O, O>
   : never
 
-/**
- * @desc The type allowed on the top level of Middlewares and Endpoints
- * @param U — only "strip" is allowed for Middlewares due to intersection issue (Zod) #600
- * */
-export type IOSchema<U extends UnknownKeysParam = any> =
+type Schema<U extends UnknownKeysParam = any> =
   | z.ZodObject<any, U>
-  | z.ZodUnion<[IOSchema<U>, ...IOSchema<U>[]]>
-  | z.ZodIntersection<IOSchema<U>, IOSchema<U>>
+  | z.ZodUnion<[Schema<U>, ...Schema<U>[]]>
+  | z.ZodIntersection<Schema<U>, Schema<U>>
   | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
   | Refined<z.ZodObject<any, U>>
 
+type ParsedData<T extends Schema | z.ZodRawShape> = T extends Schema
+  ? z.output<T>
+  : T extends z.ZodRawShape
+    ? z.output<z.ZodObject<T>>
+    : never
+
+const DEFAULT_ERROR_MESSAGE = 'Bad Request'
+const DEFAULT_ERROR_STATUS = 400
+
 /**
- *
- * @param event H3 Event
- * @param schema Zod Schema
- * @param errorHandler Use your own error handler instead of throwing an H3Error
+ * Parse and validate request query from event handler. Throws an error if validation fails.
+ * @param event - A H3 event object.
+ * @param schema - A Zod object shape or object schema to validate.
  */
-export function useValidatedQuery<T extends IOSchema>(
+export function useValidatedQuery<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
-  errorHandler?: (error: z.ZodIssue[]) => void,
-) {
+): ParsedData<T> {
+  try {
+    const query = getQuery(event)
+    const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
+    return finalSchema.parse(query)
+  }
+  catch (error) {
+    throw createError({
+      statusCode: DEFAULT_ERROR_STATUS,
+      statusText: DEFAULT_ERROR_MESSAGE,
+      data: JSON.stringify({
+        errors: error as z.ZodIssue[],
+      }),
+    })
+  }
+}
+
+type SafeParsedData<T extends Schema | z.ZodRawShape> = T extends Schema
+  ? z.SafeParseReturnType<T, ParsedData<T>>
+  : T extends z.ZodRawShape
+    ? z.SafeParseReturnType<z.ZodObject<T>, ParsedData<T>>
+    : never
+
+/**
+ * Parse and validate query from event handler. Doesn't throw if validation fails.
+ * @param event - A H3 event object.
+ * @param schema - A Zod object shape or object schema to validate.
+ */
+export function useSafeValidatedQuery<T extends Schema | z.ZodRawShape>(
+  event: H3Event,
+  schema: T,
+): SafeParsedData<T> {
   const query = getQuery(event)
-  const parsed = schema.safeParse(query)
-
-  if (!parsed.success) {
-    if (errorHandler) {
-      errorHandler(parsed.error.issues)
-      return
-    }
-
-    throw createError({
-      statusCode: 400,
-      statusMessage: JSON.stringify({
-        errors: parsed.error.issues,
-      }),
-    })
-  }
-
-  return parsed.data as z.infer<T>
+  const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
+  return finalSchema.safeParse(query) as SafeParsedData<T>
 }
 
 /**
- *
- * @param event H3 Event
- * @param schema Zod Schema
- * @param errorHandler Use your own error handler instead of throwing an H3Error
+ * Parse and validate request body from event handler. Throws an error if validation fails.
+ * @param event - A H3 event object.
+ * @param schema - A Zod object shape or object schema to validate.
  */
-export async function useValidatedBody<T extends IOSchema>(
+export async function useValidatedBody<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
-  errorHandler?: (error: z.ZodIssue[]) => void,
-) {
-  const body = await readBody(event)
-  const parsed = schema.safeParse(body)
-
-  if (!parsed.success) {
-    if (errorHandler) {
-      errorHandler(parsed.error.issues)
-      return
-    }
-
+): Promise<ParsedData<T>> {
+  try {
+    const body = await readBody(event)
+    const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
+    return finalSchema.parse(body)
+  }
+  catch (error) {
     throw createError({
-      statusCode: 400,
-      statusMessage: JSON.stringify({
-        errors: parsed.error.issues,
+      statusCode: DEFAULT_ERROR_STATUS,
+      statusText: DEFAULT_ERROR_MESSAGE,
+      data: JSON.stringify({
+        errors: error as z.ZodIssue[],
       }),
     })
   }
-
-  return parsed.data as z.infer<T>
 }
 
-interface RequestSchemas<
-  TBody extends IOSchema,
-  TQuery extends IOSchema,
-> {
-  body?: TBody
-  query?: TQuery
-}
-
-interface RequestIssues {
-  body: z.ZodIssue[] | null
-  query: z.ZodIssue[] | null
-}
-
-export function defineEventHandlerWithSchema<
-  TBody extends IOSchema,
-  TQuery extends IOSchema,
->({
-  handler,
-  schema,
-  errorHandler,
-}: {
-  handler: EventHandler
-  schema: RequestSchemas<TBody, TQuery>
-  errorHandler?: (errors: RequestIssues, event: H3Event) => void
-}) {
-  return eventHandler(async (event) => {
-    const errors: RequestIssues = {
-      body: null,
-      query: null,
-    }
-
-    const parsedData: {
-      body: z.infer<TBody> | null
-      query: z.infer<TQuery> | null
-    } = {
-      body: null,
-      query: null,
-    }
-
-    if (schema.query) {
-      const query = getQuery(event)
-      const parsed = schema.query.safeParse(query)
-
-      if (!parsed.success)
-        errors.query = parsed.error.issues
-      else
-        parsedData.query = parsed.data as z.infer<TQuery>
-    }
-
-    if (schema.body && isMethod(event, 'POST')) {
-      const body = await readBody(event)
-      const parsed = schema.body.safeParse(body)
-
-      if (!parsed.success)
-        errors.body = parsed.error.issues
-      else
-        parsedData.body = parsed.data as z.infer<TBody>
-    }
-
-    if (errors.body || errors.query) {
-      if (errorHandler) {
-        errorHandler(errors, event)
-        return
-      }
-
-      throw createError({
-        statusCode: 400,
-        statusMessage: JSON.stringify({
-          errors,
-        }),
-      })
-    }
-
-    event.context.parsedData = parsedData
-
-    return handler(event)
-  })
+/**
+ * Parse and validate request body from event handler. Doesn't throw if validation fails.
+ * @param event - A H3 event object.
+ * @param schema - A Zod object shape or object schema to validate.
+ */
+export async function useSafeValidatedBody<T extends Schema | z.ZodRawShape>(
+  event: H3Event,
+  schema: T,
+): Promise<SafeParsedData<T>> {
+  const body = await readBody(event)
+  const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
+  return finalSchema.safeParse(body) as SafeParsedData<T>
 }
 
 export {
