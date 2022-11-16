@@ -1,3 +1,4 @@
+// Original code by https://github.com/rileytomasek/zodix/blob/master/src/schemas.ts
 import { z } from 'zod'
 
 /**
