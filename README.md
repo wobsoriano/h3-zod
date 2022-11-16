@@ -109,6 +109,14 @@ const parsed = Schema.parse({
   age: '38',
   cost: '10.99'
 });
+
+console.log(parsed)
+// {
+//   isAdmin: true,
+//   agreedToTerms: true,
+//   age: 38,
+//   cost: 10.99
+// }
 ```
 
 ## Related
