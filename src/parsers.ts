@@ -4,16 +4,12 @@ import { z } from 'zod'
 
 type UnknownKeysParam = 'passthrough' | 'strict' | 'strip'
 
-type Refined<T extends z.ZodType> = T extends z.ZodType<infer O>
-  ? z.ZodEffects<T, O, O>
-  : never
-
 type Schema<U extends UnknownKeysParam = any> =
   | z.ZodObject<any, U>
   | z.ZodUnion<[Schema<U>, ...Schema<U>[]]>
   | z.ZodIntersection<Schema<U>, Schema<U>>
   | z.ZodDiscriminatedUnion<string, z.Primitive, z.ZodObject<any, U>>
-  | Refined<z.ZodObject<any, U>>
+  | z.ZodEffects<z.ZodTypeAny>
 
 type ParsedData<T extends Schema | z.ZodRawShape> = T extends Schema
   ? z.output<T>
