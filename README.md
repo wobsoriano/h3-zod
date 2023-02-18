@@ -54,7 +54,7 @@ export default defineEventHandler(async (event) => {
     required: z.boolean()
   }))
 
-  const params = zh.useValidatedParams(event, {
+  const params = await zh.useValidatedParams(event, {
     id: z.number()
   })
 })
