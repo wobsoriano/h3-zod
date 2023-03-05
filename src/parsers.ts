@@ -36,11 +36,11 @@ function createBadRequest(error: any) {
 export function useValidatedQuery<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
-): ParsedData<T> {
+): Promise<ParsedData<T>> {
   try {
     const query = getQuery(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parse(query)
+    return finalSchema.parseAsync(query)
   }
   catch (error) {
     throw createBadRequest(error)
@@ -61,10 +61,10 @@ type SafeParsedData<T extends Schema | z.ZodRawShape> = T extends Schema
 export function useSafeValidatedQuery<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
-): SafeParsedData<T> {
+): Promise<SafeParsedData<T>> {
   const query = getQuery(event)
   const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-  return finalSchema.safeParse(query) as SafeParsedData<T>
+  return finalSchema.safeParseAsync(query) as Promise<SafeParsedData<T>>
 }
 
 /**
@@ -79,7 +79,7 @@ export async function useValidatedBody<T extends Schema | z.ZodRawShape>(
   try {
     const body = await readBody(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parse(body)
+    return finalSchema.parseAsync(body)
   }
   catch (error) {
     throw createBadRequest(error)
@@ -97,7 +97,7 @@ export async function useSafeValidatedBody<T extends Schema | z.ZodRawShape>(
 ): Promise<SafeParsedData<T>> {
   const body = await readBody(event)
   const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-  return finalSchema.safeParse(body) as SafeParsedData<T>
+  return finalSchema.safeParseAsync(body) as Promise<SafeParsedData<T>>
 }
 
 /**
@@ -112,7 +112,7 @@ export function useValidatedParams<T extends Schema | z.ZodRawShape>(
   try {
     const params = getRouterParams(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parse(params)
+    return finalSchema.parseAsync(params)
   }
   catch (error) {
     throw createBadRequest(error)
@@ -127,10 +127,10 @@ export function useValidatedParams<T extends Schema | z.ZodRawShape>(
 export function useSafeValidatedParams<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
-): SafeParsedData<T> {
+): Promise<SafeParsedData<T>> {
   const params = getRouterParams(event)
   const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-  return finalSchema.safeParse(params) as SafeParsedData<T>
+  return finalSchema.safeParseAsync(params) as Promise<SafeParsedData<T>>
 }
 
 export {
