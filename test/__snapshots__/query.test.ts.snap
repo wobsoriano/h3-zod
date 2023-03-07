@@ -1,4 +1,4 @@
-// Vitest Snapshot v1
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`useValidatedQuery > doesn't throw 400 Bad Request if query does not match validation schema 1`] = `
 {
@@ -23,14 +23,5 @@ exports[`useValidatedQuery > doesn't throw 400 Bad Request if query does not mat
 exports[`useValidatedQuery > returns 200 OK if query matches validation schema 1`] = `
 {
   "required": "",
-}
-`;
-
-exports[`useValidatedQuery > throws 400 Bad Request if query does not match validation schema 1`] = `
-{
-  "data": "{\\"issues\\":[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"string\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}],\\"name\\":\\"ZodError\\"}",
-  "stack": [],
-  "statusCode": 400,
-  "statusMessage": "Bad Request",
 }
 `;
