@@ -33,14 +33,15 @@ function createBadRequest(error: any) {
  * @param event - A H3 event object.
  * @param schema - A Zod object shape or object schema to validate.
  */
-export function useValidatedQuery<T extends Schema | z.ZodRawShape>(
+export async function useValidatedQuery<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
 ): Promise<ParsedData<T>> {
   try {
     const query = getQuery(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parseAsync(query)
+    const parsed = await finalSchema.parseAsync(query)
+    return parsed
   }
   catch (error) {
     throw createBadRequest(error)
@@ -79,7 +80,8 @@ export async function useValidatedBody<T extends Schema | z.ZodRawShape>(
   try {
     const body = await readBody(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parseAsync(body)
+    const parsed = await finalSchema.parseAsync(body)
+    return parsed
   }
   catch (error) {
     throw createBadRequest(error)
