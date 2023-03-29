@@ -38,6 +38,10 @@ export default defineEventHandler(async (event) => {
   const params = zh.useSafeValidatedParams(event, {
     id: z.number()
   })
+
+  if (!params.success) {
+    // params.error
+  }
 })
 ```
 
