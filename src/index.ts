@@ -1,8 +1,10 @@
 import {
   useSafeValidatedBody,
+  useSafeValidatedParam,
   useSafeValidatedParams,
   useSafeValidatedQuery,
   useValidatedBody,
+  useValidatedParam,
   useValidatedParams,
   useValidatedQuery,
 } from './parsers'
@@ -16,9 +18,11 @@ import {
 
 export const zh = {
   useSafeValidatedBody,
+  useSafeValidatedParam,
   useSafeValidatedParams,
   useSafeValidatedQuery,
   useValidatedBody,
+  useValidatedParam,
   useValidatedParams,
   useValidatedQuery,
   boolAsString,
@@ -29,9 +33,11 @@ export const zh = {
 
 export {
   useSafeValidatedBody,
+  useSafeValidatedParam,
   useSafeValidatedParams,
   useSafeValidatedQuery,
   useValidatedBody,
+  useValidatedParam,
   useValidatedParams,
   useValidatedQuery,
 } from './parsers'

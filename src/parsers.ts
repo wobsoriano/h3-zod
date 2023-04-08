@@ -1,5 +1,5 @@
 import type { H3Event } from 'h3'
-import { createError, getQuery, getRouterParams, readBody } from 'h3'
+import { createError, getQuery, getRouterParam, getRouterParams, readBody } from 'h3'
 import { z } from 'zod'
 
 type UnknownKeysParam = 'passthrough' | 'strict' | 'strip'
@@ -133,6 +133,42 @@ export function useSafeValidatedParams<T extends Schema | z.ZodRawShape>(
   const params = getRouterParams(event)
   const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
   return finalSchema.safeParseAsync(params) as Promise<SafeParsedData<T>>
+}
+
+// ===========================================================================
+/**
+ * Parse and validate a specific param from event handler. Throws an error if validation fails.
+ * @param event - A H3 event object.
+ * @param name - The name of the param to validate.
+ * @param schema - A Zod primitive type to validate against.
+ */
+export async function useValidatedParam(
+  event: H3Event,
+  name: string,
+  schema: z.ZodType,
+) {
+  try {
+    const param = getRouterParam(event, name)
+    return await schema.parseAsync(param)
+  }
+  catch (error) {
+    throw createBadRequest(error)
+  }
+}
+
+/**
+ * Parse and validate a specific param from event handler. Doesn't throw if validation fails.
+ * @param event - A H3 event object.
+ * @param name - The name of the param to validate.
+ * @param schema - A Zod primitive type to validate against.
+ */
+export async function useSafeValidatedParam(
+  event: H3Event,
+  name: string,
+  schema: z.ZodType,
+) {
+  const param = getRouterParam(event, name)
+  return await schema.safeParseAsync(param)
 }
 
 export {
