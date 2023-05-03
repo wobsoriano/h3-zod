@@ -28,7 +28,20 @@ exports[`useValidatedBody > returns 200 OK if body matches validation schema 1`]
 
 exports[`useValidatedBody > throws 400 Bad Request if body does not match validation schema 1`] = `
 {
-  "data": "{\\"issues\\":[{\\"code\\":\\"invalid_type\\",\\"expected\\":\\"boolean\\",\\"received\\":\\"undefined\\",\\"path\\":[\\"required\\"],\\"message\\":\\"Required\\"}],\\"name\\":\\"ZodError\\"}",
+  "data": {
+    "issues": [
+      {
+        "code": "invalid_type",
+        "expected": "boolean",
+        "message": "Required",
+        "path": [
+          "required",
+        ],
+        "received": "undefined",
+      },
+    ],
+    "name": "ZodError",
+  },
   "stack": [],
   "statusCode": 400,
   "statusMessage": "Bad Request",
