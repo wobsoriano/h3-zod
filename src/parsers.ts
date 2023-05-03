@@ -24,7 +24,7 @@ function createBadRequest(error: any) {
   return createError({
     statusCode: DEFAULT_ERROR_STATUS,
     statusText: DEFAULT_ERROR_MESSAGE,
-    data: JSON.stringify(error),
+    data: error,
   })
 }
 
