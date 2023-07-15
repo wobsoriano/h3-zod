@@ -113,7 +113,7 @@ export async function useSafeValidatedBody<T extends Schema | z.ZodRawShape>(
  * @param event - A H3 event object.
  * @param schema - A Zod object shape or object schema to validate.
  */
-export function useValidatedParams<T extends Schema | z.ZodRawShape>(
+export async function useValidatedParams<T extends Schema | z.ZodRawShape>(
   event: H3Event,
   schema: T,
   parseOptions?: ParseOptions,
@@ -121,7 +121,8 @@ export function useValidatedParams<T extends Schema | z.ZodRawShape>(
   try {
     const params = getRouterParams(event)
     const finalSchema = schema instanceof z.ZodType ? schema : z.object(schema)
-    return finalSchema.parseAsync(params, parseOptions)
+    const parsed = await finalSchema.parseAsync(params, parseOptions)
+    return parsed
   }
   catch (error) {
     throw createBadRequest(error)
