@@ -5,7 +5,7 @@
 Validate [h3](https://github.com/unjs/h3) and Nuxt requests with [zod](https://github.com/colinhacks/zod).
 
 > [!IMPORTANT]  
-> H3 1.8.0 now has built-in [runtime + type-safe request utilities](https://unjs.io/blog/2023-08-15-h3-towards-the-edge-of-the-web#runtime-type-safe-request-utils), eliminating the need for this module.
+> Starting at h3 1.8.0, built-in [runtime + type-safe request utilities](https://unjs.io/blog/2023-08-15-h3-towards-the-edge-of-the-web#runtime-type-safe-request-utils) are included, so you might not need this module.
 
 ## Install
 
