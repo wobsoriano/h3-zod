@@ -39,7 +39,7 @@ export const checkboxAsString = z
 export const intAsString = z
   .string()
   .regex(/^-?\d+$/, 'Must be an integer string')
-  .transform(val => parseInt(val, 10))
+  .transform(val => Number.parseInt(val, 10))
 
 /**
  * Zod schema to parse strings that are numbers.
