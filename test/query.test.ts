@@ -1,13 +1,14 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import type { SuperTest, Test } from 'supertest'
+import type { Test } from 'supertest'
 import supertest from 'supertest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
 import { useSafeValidatedQuery, useValidatedQuery, z } from '../src'
+import TestAgent from 'supertest/lib/agent'
 
 describe('useValidatedQuery', () => {
   let app: App
-  let request: SuperTest<Test>
+  let request: TestAgent<Test>
 
   beforeEach(() => {
     app = createApp({ debug: false })

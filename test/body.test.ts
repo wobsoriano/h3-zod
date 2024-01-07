@@ -1,13 +1,14 @@
-import type { SuperTest, Test } from 'supertest'
+import type { Test } from 'supertest'
 import supertest from 'supertest'
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
 import { useSafeValidatedBody, useValidatedBody, z } from '../src'
+import TestAgent from 'supertest/lib/agent'
 
 describe('useValidatedBody', () => {
   let app: App
-  let request: SuperTest<Test>
+  let request: TestAgent<Test>
 
   beforeEach(() => {
     app = createApp({ debug: false })
