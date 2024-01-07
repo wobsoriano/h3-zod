@@ -3,8 +3,8 @@ import supertest from 'supertest'
 import { beforeEach, describe, expect, it } from 'vitest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
+import type TestAgent from 'supertest/lib/agent'
 import { useSafeValidatedBody, useValidatedBody, z } from '../src'
-import TestAgent from 'supertest/lib/agent'
 
 describe('useValidatedBody', () => {
   let app: App

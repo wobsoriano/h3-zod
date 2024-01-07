@@ -3,8 +3,8 @@ import type { Test } from 'supertest'
 import supertest from 'supertest'
 import type { App } from 'h3'
 import { createApp, eventHandler, toNodeListener } from 'h3'
+import type TestAgent from 'supertest/lib/agent'
 import { useSafeValidatedQuery, useValidatedQuery, z } from '../src'
-import TestAgent from 'supertest/lib/agent'
 
 describe('useValidatedQuery', () => {
   let app: App
