@@ -29,7 +29,7 @@ Helpers that don't throw when parsing fails:
 
 ```ts
 export default defineEventHandler(async (event) => {
-  const query = zh.useSafeValidatedQuery(event, z.object({
+  const query = await zh.useSafeValidatedQuery(event, z.object({
     required: z.string()
   }))
 
