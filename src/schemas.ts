@@ -51,5 +51,5 @@ export const intAsString = z
  */
 export const numAsString = z
   .string()
-  .regex(/^-?\d*\.?\d+$/, 'Must be a number string')
+  .regex(/^-?(?:\d+(?:\.\d+)?|\.\d+)$/, 'Must be a number string')
   .transform(Number)
