@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, it } from 'vitest'
-import type { Test } from 'supertest'
-import supertest from 'supertest'
 import type { App } from 'h3'
-import { createApp, eventHandler, toNodeListener } from 'h3'
+import type { Test } from 'supertest'
 import type TestAgent from 'supertest/lib/agent'
+import { createApp, eventHandler, toNodeListener } from 'h3'
+import supertest from 'supertest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import { useSafeValidatedQuery, useValidatedQuery, z } from '../src'
 
 describe('useValidatedQuery', () => {

@@ -18,11 +18,9 @@ npm install zod h3-zod
 Import it like:
 
 ```ts
-import { zh } from 'h3-zod';
+import { useSafeValidatedBody, useSafeValidatedQuery, zh } from 'h3-zod'
 
 // Or
-
-import { useSafeValidatedQuery, useSafeValidatedBody } from 'h3-zod';
 ```
 
 Helpers that don't throw when parsing fails:
@@ -108,14 +106,14 @@ const Schema = z.object({
   agreedToTerms: zh.checkboxAsString,
   age: zh.intAsString,
   cost: zh.numAsString,
-});
+})
 
 const parsed = Schema.parse({
   isAdmin: 'true',
   agreedToTerms: 'on',
   age: '38',
   cost: '10.99'
-});
+})
 
 console.log(parsed)
 // {
